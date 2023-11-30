@@ -60,7 +60,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 						val normalMember = group[it.userID] ?: return
 
 						appendLine()
-						appendLine("────────────────────────────────────────")
+						appendLine("──────────")
 						appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
 							buildString {
 								var now = true
