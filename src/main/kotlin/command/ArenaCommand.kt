@@ -65,16 +65,21 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 							buildString {
 								var now = true
 
-								if (hours > 0) {
+								val hoursNotZero = hours > 0
+
+								if (hoursNotZero) {
 									now = false
 									append(hours)
 									append(" 小时")
 								}
 
-								if (minutes > 0) {
+								val minutesNotZero = minutes > 0
+
+								if (hoursNotZero && minutesNotZero) append(' ')
+
+								if (minutesNotZero) {
 									if (now) now = false
 
-									append(' ')
 									append(minutes)
 									append(" 分钟")
 								}
@@ -82,7 +87,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 								append(if (now) "刚才" else "前")
 							}
 						})
-						+"房主"
+						appendLine("房主")
 						val specialTitle = normalMember.specialTitle
 
 						if (specialTitle.isNotEmpty()) {
@@ -91,13 +96,13 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 							appendLine('】')
 						} else appendLine(normalMember.nameCardOrNick)
 
-						+"**ID**"
+						appendLine("**ID**")
 						+it.arenaID
 						val arenaPassword = it.arenaPassword
 
 						if (arenaPassword.isNotEmpty()) {
 							appendLine()
-							+"**密码**"
+							appendLine("**密码**")
 							+arenaPassword
 						}
 
@@ -105,7 +110,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 
 						if (arenaRemark.isNotEmpty()) {
 							appendLine()
-							+"备注"
+							appendLine("备注")
 							+it.arenaRemark
 						}
 					}

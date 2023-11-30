@@ -21,10 +21,8 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 	override fun onEnable() {
 		MiraiSmashData.reload()
 		MiraiSmashData.arenas.forEach {
-			logger.info { it.toString() }
 			arenas.add(it)
 		}
-		logger.info { arenas.toString() }
 		CommandManager.registerCommand(ArenaCommand())
 		CommandManager.registerCommand(CreateArenaCommand())
 		CommandManager.registerCommand(ShowAllArenasCommand())
