@@ -24,6 +24,9 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 		CommandManager.registerCommand(CreateArenaCommand())
 		CommandManager.registerCommand(ShowAllArenasCommand())
 		CommandManager.registerCommand(ShutDownArenaCommand())
-		logger.info { "Mirai Smash已加载" }
+		logger.info { "╭┬─╮" }
+		logger.info { "││ │ Mirai Smash" }
+		logger.info { "├┼─┤ 已加载" }
+		logger.info { "╰┴─╯" }
 	}
 }
