@@ -26,7 +26,8 @@ class ShowAllArenasCommand : SimpleCommand(MiraiSmash, "查房", "房间", descr
 				buildString {
 					appendLine()
 					append(it.creationTime.toLocalDateTime(TimeZone.currentSystemDefault()))
-					append('\t')
+					append("\t房主：")
+					append(it.context.sender.name)
 					append("\tID：")
 					append(it.arenaID)
 					append("\t密码：")

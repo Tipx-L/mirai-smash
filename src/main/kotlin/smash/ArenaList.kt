@@ -18,29 +18,27 @@ class ArenaList : ArrayList<Arena>() {
 
 		if (timeElapsed >= timeOut) return false
 
-		val added = super.add(element)
-
-		if (added) timeOutMap[element] = MiraiSmash.launch {
+		timeOutMap[element] = MiraiSmash.launch {
 			delay(timeOut - timeElapsed)
 			remove(element)
 		}
 
-		return added
+		return super.add(element)
 	}
 
 	fun shutDownArena(sender: CommandSender): Boolean {
 		val user = sender.user ?: return false
 		val groupID = sender.getGroupOrNull()?.id ?: return false
 		val arena = find {
-			val testingSender = it.context.sender
-			val userID = testingSender.user?.id ?: return@find false
+			val arenaSender = it.context.sender
+			val userID = arenaSender.user?.id ?: return@find false
 
 			if (userID != user.id) return@find false
 
-			val testingGroupID = testingSender.getGroupOrNull()?.id ?: return@find false
-			testingGroupID == groupID
+			val arenaGroupID = arenaSender.getGroupOrNull()?.id ?: return@find false
+			arenaGroupID == groupID
 		} ?: return false
-		timeOutMap[arena]?.cancel()
+		timeOutMap.remove(arena)?.cancel()
 		return remove(arena)
 	}
 }
