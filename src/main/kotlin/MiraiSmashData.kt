@@ -5,5 +5,5 @@ import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.value
 
 object MiraiSmashData : AutoSavePluginData("mirai-smash-data") {
-	var arenas: List<Arena> by value()
+	val arenas: MutableList<Arena> by value()
 }

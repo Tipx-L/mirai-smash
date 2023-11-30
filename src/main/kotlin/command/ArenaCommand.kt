@@ -1,6 +1,7 @@
 package io.github.tipx_l.miraismash.command
 
 import io.github.tipx_l.miraismash.MiraiSmash
+import io.github.tipx_l.miraismash.MiraiSmashData
 import io.github.tipx_l.miraismash.smash.Arena
 import kotlinx.datetime.Clock
 import net.mamoe.mirai.console.command.CommandContext
@@ -30,10 +31,14 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val sender = context.sender
 			val groupID = sender.getGroupOrNull()?.id ?: return
 			val user = sender.user ?: return
-			val quote = context.originalMessage.quote()
-			MiraiSmash.arenas += Arena(groupID, user.id, arenaID, arenaPassword, arenaRemark)
+			val userID = user.id
+			val arenas = MiraiSmashData.arenas
+			arenas.removeIf {
+				it.groupID == groupID && it.userID == userID
+			}
+			arenas += Arena(groupID, userID, arenaID, arenaPassword, arenaRemark)
 			sender.subject?.sendMessage(buildMessageChain {
-				+quote
+				+context.originalMessage.quote()
 				+At(user)
 				+" 已开房"
 			})
@@ -43,7 +48,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val sender = context.sender
 			val user = sender.user ?: return
 			val group = sender.getGroupOrNull() ?: return
-			val arenas = MiraiSmash.arenas
+			val arenas = MiraiSmashData.arenas
 			val size = arenas.size
 			sender.subject?.sendMessage(buildMessageChain {
 				+context.originalMessage.quote()

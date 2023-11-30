@@ -1,6 +1,7 @@
 package io.github.tipx_l.miraismash.command
 
 import io.github.tipx_l.miraismash.MiraiSmash
+import io.github.tipx_l.miraismash.MiraiSmashData
 import net.mamoe.mirai.console.command.CommandContext
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.console.command.getGroupOrNull
@@ -17,7 +18,7 @@ class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "
 		val sender = context.sender
 		val group = sender.getGroupOrNull() ?: return
 		val user = sender.user ?: return
-		MiraiSmash.arenas.removeIf {
+		MiraiSmashData.arenas.removeIf {
 			it.groupID == group.id && it.userID == user.id
 		}
 		sender.subject?.sendMessage(buildMessageChain {
