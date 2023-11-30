@@ -20,7 +20,6 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 	val arenas = ArenaList()
 	override fun onEnable() {
 		MiraiSmashData.reload()
-		logger.info { MiraiSmashData.arenas.toString() }
 		arenas.addAll(MiraiSmashData.arenas)
 		CommandManager.registerCommand(ArenaCommand())
 		CommandManager.registerCommand(CreateArenaCommand())
@@ -30,5 +29,6 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 		logger.info { "││ │ Mirai Smash" }
 		logger.info { "├┼─┤ 已加载" }
 		logger.info { "╰┴─╯" }
+		logger.info { arenas.toString() }
 	}
 }
