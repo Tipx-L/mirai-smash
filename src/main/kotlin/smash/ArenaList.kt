@@ -6,7 +6,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import net.mamoe.mirai.utils.info
 import java.util.function.Predicate
 import kotlin.time.Duration.Companion.hours
 
@@ -38,30 +37,6 @@ class ArenaList : ArrayList<Arena>() {
 		val remove = super.remove(element)
 		MiraiSmashData.arenas = this
 		return remove
-	}
-
-	override fun addAll(elements: Collection<Arena>): Boolean {
-		val arenas = elements.filter {
-			if (Clock.System.now() - it.creationTime >= 8.hours) return false
-
-			val removingArena = find { arena ->
-				arena.groupID == it.groupID && arena.userID == it.userID
-			}
-
-			if (removingArena != null) remove(removingArena)
-
-			return true
-		}
-		MiraiSmash.logger.info { MiraiSmash.arenas.toString() }
-		val added = super.addAll(arenas)
-		arenas.forEach {
-			timeOutMap[it] = MiraiSmash.launch {
-				delay(8.hours - (Clock.System.now() - it.creationTime))
-				remove(it)
-			}
-		}
-		MiraiSmashData.arenas = this
-		return added
 	}
 
 	override fun removeIf(filter: Predicate<in Arena>): Boolean {
