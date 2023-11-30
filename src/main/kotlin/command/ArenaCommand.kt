@@ -41,13 +41,9 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 
 		suspend fun showAllArenas(context: CommandContext) {
 			val sender = context.sender
-			print(sender)
 			val user = sender.user ?: return
-			print(user)
 			val group = sender.getGroupOrNull() ?: return
-			print(group)
 			val arenas = MiraiSmash.arenas
-			print(arenas)
 			val size = arenas.size
 			sender.subject?.sendMessage(buildMessageChain {
 				+context.originalMessage.quote()
@@ -67,7 +63,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 					val normalMember = group[it.userID] ?: return
 
 					appendLine()
-					+"────────────────────────────────────────"
+					appendLine("────────────────────────────────────────")
 					appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
 						buildString {
 							var now = true
