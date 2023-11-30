@@ -5,7 +5,6 @@ import io.github.tipx_l.miraismash.command.CreateArenaCommand
 import io.github.tipx_l.miraismash.command.ShowAllArenasCommand
 import io.github.tipx_l.miraismash.command.ShutDownArenaCommand
 import io.github.tipx_l.miraismash.smash.ArenaList
-import kotlinx.coroutines.launch
 import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -21,9 +20,7 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 	val arenas = ArenaList()
 	override fun onEnable() {
 		MiraiSmashData.reload()
-		launch {
-			arenas.addAll(MiraiSmashData.arenas)
-		}
+		arenas.addAll(MiraiSmashData.arenas)
 		CommandManager.registerCommand(ArenaCommand())
 		CommandManager.registerCommand(CreateArenaCommand())
 		CommandManager.registerCommand(ShowAllArenasCommand())
