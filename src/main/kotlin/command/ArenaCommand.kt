@@ -56,67 +56,69 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 				+context.originalMessage.quote()
 				+At(user)
 
-				if (size <= 0) +" 目前没有房间！"
-				else {
-					+" 目前的房间有"
-					+size.toString()
-					+"个："
-					arenas.forEach {
-						val normalMember = group[it.userID] ?: return
-						appendLine()
-						appendLine("──────────")
-						appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
-							buildString {
-								var now = true
+				if (size <= 0) {
+					+" 目前没有房间！"
+					return
+				}
 
-								val hoursNotZero = hours > 0
+				+" 目前的房间有 "
+				+size.toString()
+				+" 个："
+				arenas.forEach {
+					val normalMember = group[it.userID] ?: return
+					appendLine()
+					appendLine("──────────")
+					appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
+						buildString {
+							var now = true
 
-								if (hoursNotZero) {
-									now = false
-									append(hours)
-									append(" 小时")
-								}
+							val hoursNotZero = hours > 0
 
-								val minutesNotZero = minutes > 0
-
-								if (hoursNotZero && minutesNotZero) append(' ')
-
-								if (minutesNotZero) {
-									if (now) now = false
-
-									append(minutes)
-									append(" 分钟")
-								}
-
-								append(if (now) "刚才" else "前")
+							if (hoursNotZero) {
+								now = false
+								append(hours)
+								append(" 小时")
 							}
-						})
-						appendLine("房主")
-						val specialTitle = normalMember.specialTitle
 
-						if (specialTitle.isNotEmpty()) {
-							append('【')
-							+specialTitle
-							appendLine('】')
-						} else appendLine(normalMember.nameCardOrNick)
+							val minutesNotZero = minutes > 0
 
-						appendLine("**ID**")
-						+it.arenaID
-						val arenaPassword = it.arenaPassword
+							if (hoursNotZero && minutesNotZero) append(' ')
 
-						if (arenaPassword.isNotEmpty()) {
-							appendLine()
-							appendLine("**密码**")
-							+arenaPassword
+							if (minutesNotZero) {
+								if (now) now = false
+
+								append(minutes)
+								append(" 分钟")
+							}
+
+							append(if (now) "刚才" else "前")
 						}
+					})
+					appendLine("房主")
+					val specialTitle = normalMember.specialTitle
 
-						val arenaRemark = it.arenaRemark
+					if (specialTitle.isNotEmpty()) {
+						append('【')
+						+specialTitle
+						appendLine('】')
+					} else appendLine(normalMember.nameCardOrNick)
 
-						if (arenaRemark.isNotEmpty()) {
-							appendLine()
-							appendLine("备注")
-							+it.arenaRemark
-						}
+					appendLine("**ID**")
+					+it.arenaID
+					val arenaPassword = it.arenaPassword
+
+					if (arenaPassword.isNotEmpty()) {
+						appendLine()
+						appendLine("**密码**")
+						+arenaPassword
+					}
+
+					val arenaRemark = it.arenaRemark
+
+					if (arenaRemark.isNotEmpty()) {
+						appendLine()
+						appendLine("备注")
+						+it.arenaRemark
 					}
 				}
 			})
