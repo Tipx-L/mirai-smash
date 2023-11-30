@@ -12,6 +12,9 @@ import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.buildMessageChain
 
 class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间") {
+	override val usage: String
+		get() = "/房间 [房间 ID] [房间密码] [房间备注]"
+
 	@Handler
 	suspend fun arena(
 		context: CommandContext, arenaID: String = "", arenaPassword: String = "", arenaRemark: String = ""
@@ -41,68 +44,71 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val user = sender.user ?: return
 			val group = sender.getGroupOrNull() ?: return
 			val arenas = MiraiSmash.arenas
+			val size = arenas.size
 			sender.subject?.sendMessage(buildMessageChain {
 				+context.originalMessage.quote()
 				+At(user)
+
+				if (size <= 0) {
+					+" 目前没有房间！"
+					return
+				}
+
 				+" 目前的房间有"
-				+arenas.size.toString()
-				+"个"
+				+size.toString()
+				+"个："
 				arenas.forEach {
 					if (it.groupID != group.id) return
 
 					val normalMember = group[it.userID] ?: return
 
 					appendLine()
-					+(Clock.System.now() - it.creationTime).toComponents { hours, minutes, seconds, _ ->
+					+"────────────────────────────────────────"
+					appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
 						buildString {
 							var now = true
 
 							if (hours > 0) {
 								now = false
 								append(hours)
-								append("小时")
+								append(" 小时")
 							}
 
 							if (minutes > 0) {
 								if (now) now = false
 
+								append(' ')
 								append(minutes)
-								append("分钟")
+								append(" 分钟")
 							}
 
-							if (seconds > 0) {
-								if (now) now = false
-
-								append(seconds)
-								append("秒")
-							}
-
-							append(if (now) "刚刚" else "前")
+							append(if (now) "刚才" else "前")
 						}
-					}
-					+"\t房主："
+					})
+					+"房主"
 					val specialTitle = normalMember.specialTitle
 
 					if (specialTitle.isNotEmpty()) {
 						append('【')
 						+specialTitle
-						append('】')
-					}
+						appendLine('】')
+					} else appendLine(normalMember.nameCardOrNick)
 
-					+normalMember.nameCardOrNick
-					+"\tID："
+					+"**ID**"
 					+it.arenaID
 					val arenaPassword = it.arenaPassword
 
 					if (arenaPassword.isNotEmpty()) {
-						+"\t密码："
+						appendLine()
+						+"**密码**"
 						+arenaPassword
 					}
 
 					val arenaRemark = it.arenaRemark
 
 					if (arenaRemark.isNotEmpty()) {
-						+"\t备注："
+						appendLine()
+						+"备注"
 						+it.arenaRemark
 					}
 				}

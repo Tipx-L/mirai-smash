@@ -6,8 +6,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import net.mamoe.mirai.console.command.CommandSender
-import net.mamoe.mirai.console.command.getGroupOrNull
+import java.util.function.Predicate
 import kotlin.time.Duration.Companion.hours
 
 class ArenaList : ArrayList<Arena>() {
@@ -22,10 +21,7 @@ class ArenaList : ArrayList<Arena>() {
 			it.groupID == element.groupID && it.userID == element.userID
 		}
 
-		if (arena != null) {
-			timeOutMap.remove(arena)?.cancel()
-			remove(arena)
-		}
+		if (arena != null) remove(arena)
 
 		val added = super.add(element)
 		timeOutMap[element] = MiraiSmash.launch {
@@ -36,14 +32,41 @@ class ArenaList : ArrayList<Arena>() {
 		return added
 	}
 
-	fun shutDownArena(sender: CommandSender): Boolean {
-		val groupID = sender.getGroupOrNull()?.id ?: return false
-		val userID = sender.user?.id ?: return false
-		val arena = find {
-			it.groupID == groupID && it.userID == userID
-		} ?: return false
-		timeOutMap.remove(arena)?.cancel()
-		val removed = remove(arena)
+	override fun remove(element: Arena): Boolean {
+		timeOutMap.remove(element)?.cancel()
+		val remove = super.remove(element)
+		MiraiSmashData.arenas = this
+		return remove
+	}
+
+	override fun addAll(elements: Collection<Arena>): Boolean {
+		val arenas = elements.filter {
+			if (Clock.System.now() - it.creationTime >= 8.hours) return false
+
+			val removingArena = find { arena ->
+				arena.groupID == it.groupID && arena.userID == it.userID
+			}
+
+			if (removingArena != null) remove(removingArena)
+
+			return true
+		}
+		val added = super.addAll(arenas)
+		arenas.forEach {
+			timeOutMap[it] = MiraiSmash.launch {
+				delay(8.hours - (Clock.System.now() - it.creationTime))
+				remove(it)
+			}
+		}
+		MiraiSmashData.arenas = this
+		return added
+	}
+
+	override fun removeIf(filter: Predicate<in Arena>): Boolean {
+		forEach {
+			if (filter.test(it)) timeOutMap.remove(it)?.cancel()
+		}
+		val removed = super.removeIf(filter)
 		MiraiSmashData.arenas = this
 		return removed
 	}
