@@ -6,7 +6,7 @@ Mirai Smash 采用 **[GNU Affero 通用公共许可证 v3.0](https://www.gnu.org
 
 ## 用法
 
-### /开房 \<arenaID\> \<arenaPassword\> \<arenaRemark\>
+### /开房 \<arenaID\> \[arenaPassword\] \[arenaRemark\]
 
 增加房间信息，以供其他人查找并加入。
 
