@@ -9,17 +9,16 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.buildMessageChain
 
-class CreateArenaCommand :
-	SimpleCommand(MiraiSmash, "开房", description = "开房") {
+class CreateArenaCommand : SimpleCommand(MiraiSmash, "开房", "房间", description = "开房") {
 	@Handler
 	suspend fun createArena(
-		commandContext: CommandContext, arenaID: String, arenaPassword: String = "", arenaRemark: String = ""
+		context: CommandContext, arenaID: String, arenaPassword: String = "", arenaRemark: String = ""
 	) {
-		val sender = commandContext.sender
+		val sender = context.sender
 		val user = sender.user ?: return
-		MiraiSmashData.arenaMap[user.id] = Arena(arenaID, arenaPassword, arenaRemark)
+		MiraiSmashData.arenas += Arena(context, arenaID, arenaPassword, arenaRemark)
 		sender.subject?.sendMessage(buildMessageChain {
-			+commandContext.originalMessage.quote()
+			+context.originalMessage.quote()
 			+At(user)
 			+" 已开房"
 		})

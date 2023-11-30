@@ -13,7 +13,7 @@ class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "
 	suspend fun shutDownArena(commandContext: CommandContext) {
 		val sender = commandContext.sender
 		val user = sender.user ?: return
-		MiraiSmashData.arenaMap.remove(user.id)
+		MiraiSmashData.arenas.shutDownArena(sender)
 		sender.subject?.sendMessage(buildMessageChain {
 			+commandContext.originalMessage.quote()
 			+At(user)
