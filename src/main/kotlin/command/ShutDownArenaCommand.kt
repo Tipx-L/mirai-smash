@@ -10,9 +10,6 @@ import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.buildMessageChain
 
 class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "关房") {
-	override val usage: String
-		get() = "/开房 <房间 ID> [房间密码] [房间备注]"
-
 	@Handler
 	suspend fun shutDownArena(context: CommandContext) {
 		val sender = context.sender

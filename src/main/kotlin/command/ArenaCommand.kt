@@ -48,7 +48,9 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val sender = context.sender
 			val user = sender.user ?: return
 			val group = sender.getGroupOrNull() ?: return
-			val arenas = MiraiSmashData.arenas
+			val arenas = ArrayList(MiraiSmashData.arenas).filter {
+				it.groupID == group.id
+			}
 			val size = arenas.size
 			sender.subject?.sendMessage(buildMessageChain {
 				+context.originalMessage.quote()
@@ -60,10 +62,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 					+size.toString()
 					+"个："
 					arenas.forEach {
-						if (it.groupID != group.id) return
-
 						val normalMember = group[it.userID] ?: return
-
 						appendLine()
 						appendLine("──────────")
 						appendLine((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
