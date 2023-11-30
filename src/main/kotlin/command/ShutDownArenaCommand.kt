@@ -2,6 +2,7 @@ package io.github.tipx_l.miraismash.command
 
 import io.github.tipx_l.miraismash.MiraiSmash
 import io.github.tipx_l.miraismash.MiraiSmashData
+import io.github.tipx_l.miraismash.smash.ArenaList
 import net.mamoe.mirai.console.command.CommandContext
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.At
@@ -13,7 +14,7 @@ class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "
 	suspend fun shutDownArena(commandContext: CommandContext) {
 		val sender = commandContext.sender
 		val user = sender.user ?: return
-		MiraiSmashData.arenas.shutDownArena(sender)
+		(MiraiSmashData.arenas as ArenaList).shutDownArena(sender)
 		sender.subject?.sendMessage(buildMessageChain {
 			+commandContext.originalMessage.quote()
 			+At(user)
