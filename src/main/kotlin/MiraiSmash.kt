@@ -23,6 +23,7 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 		MiraiSmashData.arenas.forEach {
 			arenas.add(it)
 		}
+		arenas.forEach { logger.info { it.toString() } }
 		CommandManager.registerCommand(ArenaCommand())
 		CommandManager.registerCommand(CreateArenaCommand())
 		CommandManager.registerCommand(ShowAllArenasCommand())
