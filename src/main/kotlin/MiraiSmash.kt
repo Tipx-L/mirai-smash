@@ -3,7 +3,6 @@ package io.github.tipx_l.miraismash
 import io.github.tipx_l.miraismash.command.CreateArenaCommand
 import io.github.tipx_l.miraismash.command.ShowAllArenasCommand
 import io.github.tipx_l.miraismash.command.ShutDownArenaCommand
-import io.github.tipx_l.miraismash.smash.Arena
 import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -16,8 +15,8 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 ) {
 	author("Tipx-L")
 }) {
-	val arenaMap = HashMap<Long, Arena>()
 	override fun onEnable() {
+		MiraiSmashData.reload()
 		CommandManager.registerCommand(CreateArenaCommand())
 		CommandManager.registerCommand(ShowAllArenasCommand())
 		CommandManager.registerCommand(ShutDownArenaCommand())

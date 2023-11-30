@@ -1,5 +1,10 @@
 package io.github.tipx_l.miraismash.smash
 
-import kotlinx.coroutines.Job
+import java.time.Instant
 
-class Arena(val arenaID: String, val arenaPassword: String, val arenaRemark: String, val timeOut: Job)
+data class Arena(
+	val arenaID: String,
+	val arenaPassword: String = "",
+	val arenaRemark: String = "",
+	val creationTime: Instant = Instant.now()
+)
