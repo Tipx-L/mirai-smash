@@ -6,6 +6,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import net.mamoe.mirai.utils.info
 import java.util.function.Predicate
 import kotlin.time.Duration.Companion.hours
 
@@ -51,6 +52,7 @@ class ArenaList : ArrayList<Arena>() {
 
 			return true
 		}
+		MiraiSmash.logger.info { MiraiSmash.arenas.toString() }
 		val added = super.addAll(arenas)
 		arenas.forEach {
 			timeOutMap[it] = MiraiSmash.launch {

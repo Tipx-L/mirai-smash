@@ -29,6 +29,5 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 		logger.info { "││ │ Mirai Smash" }
 		logger.info { "├┼─┤ 已加载" }
 		logger.info { "╰┴─╯" }
-		logger.info { arenas.toString() }
 	}
 }
