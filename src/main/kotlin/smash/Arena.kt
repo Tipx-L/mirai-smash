@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class Arena(
 	val groupID: Long,
 	val userID: Long,
-	val arenaID: String,
+	var arenaID: String,
 	val arenaPassword: String = "",
 	val arenaRemark: String = "",
 	val creationTime: Instant = Clock.System.now()

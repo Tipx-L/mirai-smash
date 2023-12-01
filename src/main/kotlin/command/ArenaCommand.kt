@@ -31,12 +31,22 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val sender = context.sender
 			val groupID = sender.getGroupOrNull()?.id ?: return
 			val user = sender.user ?: return
+
+			if (arenaID.length != 5 || !arenaID.all(Char::isLetterOrDigit)) {
+				sender.subject?.sendMessage(buildMessageChain {
+					+context.originalMessage.quote()
+					+At(user)
+					+" 房号不是合法格式！"
+				})
+				return
+			}
+
 			val userID = user.id
 			val arenas = MiraiSmashData.arenas
 			arenas.removeIf {
 				it.groupID == groupID && it.userID == userID
 			}
-			arenas += Arena(groupID, userID, arenaID, arenaPassword, arenaRemark)
+			arenas += Arena(groupID, userID, arenaID.uppercase(), arenaPassword, arenaRemark)
 			sender.subject?.sendMessage(buildMessageChain {
 				+context.originalMessage.quote()
 				+At(user)
@@ -104,7 +114,11 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 					} else appendLine(normalMember.nameCardOrNick)
 
 					+"**ID**\t"
-					+it.arenaID
+					val uppercase = it.arenaID.uppercase()
+					+uppercase
+
+					if (it.arenaID != uppercase) it.arenaID = uppercase
+
 					val arenaPassword = it.arenaPassword
 
 					if (arenaPassword.isNotEmpty()) {

@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "io.github.tipx_l.miraismash"
-version = "0.1.3"
 
 repositories {
 	maven("https://maven.aliyun.com/repository/public")
