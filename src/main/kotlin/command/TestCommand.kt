@@ -20,7 +20,7 @@ object TestCommand : SimpleCommand(MiraiSmash, "测试", description = "测试")
 	suspend fun test(context: CommandContext) {
 		val arenasInformation = MiraiSmashData.arenas.flatMap {
 			val strings = ArrayList<String>()
-			strings.add((Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
+			strings += (Clock.System.now() - it.creationTime).toComponents { hours, minutes, _, _ ->
 				buildString {
 					var now = true
 
@@ -45,16 +45,28 @@ object TestCommand : SimpleCommand(MiraiSmash, "测试", description = "测试")
 
 					append(if (now) "刚才" else "前")
 				}
-			})
-			strings.add(it.userID.toString())
-			strings.add(it.arenaID)
+			}
+			strings += buildString {
+				append("房主\t")
+				append(it.userID.toString())
+			}
+			strings += buildString {
+				append("**ID**\t")
+				append(it.arenaID)
+			}
 			val arenaPassword = it.arenaPassword
 
-			if (arenaPassword.isNotEmpty()) strings.add(arenaPassword)
+			if (arenaPassword.isNotEmpty()) strings += buildString {
+				append("**密码**\t")
+				append(arenaPassword)
+			}
 
 			val arenaRemark = it.arenaRemark
 
-			if (arenaRemark.isNotEmpty()) strings.add(arenaRemark)
+			if (arenaRemark.isNotEmpty()) strings += buildString {
+				append("备注\t")
+				append(arenaRemark)
+			}
 
 			strings
 		}
@@ -63,7 +75,7 @@ object TestCommand : SimpleCommand(MiraiSmash, "测试", description = "测试")
 		graphics.font = Font("SansSerif", Font.PLAIN, 80)
 		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP)
 		arenasInformation.forEachIndexed { index, s ->
-			graphics.drawString(s, 0, 64 * (index + 1))
+			graphics.drawString(s, 0, 80 * (index + 1))
 		}
 		val byteArrayOutputStream = ByteArrayOutputStream()
 		withContext(Dispatchers.IO) {
