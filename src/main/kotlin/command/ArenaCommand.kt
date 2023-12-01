@@ -32,7 +32,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 			val groupID = sender.getGroupOrNull()?.id ?: return
 			val user = sender.user ?: return
 
-			if (arenaID.length != 5 || !arenaID.all(Char::isLetterOrDigit)) {
+			if (!arenaID.matches(MiraiSmash.arenaIDFormat)) {
 				sender.subject?.sendMessage(buildMessageChain {
 					+context.originalMessage.quote()
 					+At(user)

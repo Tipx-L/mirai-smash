@@ -26,6 +26,7 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 }) {
 	private val interval = 1.minutes
 	private val timeOutLength = 5.hours
+	val arenaIDFormat = Regex("^[0-9A-Za-z]{5}\$")
 	override fun onEnable() {
 		MiraiSmashData.reload()
 		launch {
