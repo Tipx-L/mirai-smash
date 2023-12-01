@@ -17,7 +17,7 @@ object TestCommand : SimpleCommand(MiraiSmash, "测试", description = "测试")
 	suspend fun test(context: CommandContext) {
 		val bufferedImage = BufferedImage(1280, 720, BufferedImage.TYPE_INT_RGB)
 		val graphics = bufferedImage.createGraphics()
-		graphics.drawString(MiraiSmashData.arenas.joinToString("\n"), 0F, 0F)
+		graphics.drawString(MiraiSmashData.arenas.joinToString("\n"), 0F, 360F)
 		val byteArrayOutputStream = ByteArrayOutputStream()
 		withContext(Dispatchers.IO) {
 			ImageIO.write(bufferedImage, "png", byteArrayOutputStream)
