@@ -57,7 +57,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 				+At(user)
 
 				if (size <= 0) {
-					+if (Math.random() < 0.0625) "没房，可以开一个捏亲" else " 当前没有房间，需要用 `/开房` 指令开一个吗？"
+					+if (Math.random() < 0.0625) " 没房，可以开一个捏亲" else " 当前没有房间，需要用 `/开房` 指令开一个吗？"
 					return@buildMessageChain
 				}
 
