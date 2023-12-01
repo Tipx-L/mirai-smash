@@ -1,9 +1,6 @@
 package io.github.tipx_l.miraismash
 
-import io.github.tipx_l.miraismash.command.ArenaCommand
-import io.github.tipx_l.miraismash.command.CreateArenaCommand
-import io.github.tipx_l.miraismash.command.ShowAllArenasCommand
-import io.github.tipx_l.miraismash.command.ShutDownArenaCommand
+import io.github.tipx_l.miraismash.command.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -51,10 +48,11 @@ object MiraiSmash : KotlinPlugin(JvmPluginDescription(
 				delay(interval)
 			}
 		}
-		CommandManager.registerCommand(ArenaCommand())
-		CommandManager.registerCommand(CreateArenaCommand())
-		CommandManager.registerCommand(ShowAllArenasCommand())
-		CommandManager.registerCommand(ShutDownArenaCommand())
+		CommandManager.registerCommand(ArenaCommand)
+		CommandManager.registerCommand(CreateArenaCommand)
+		CommandManager.registerCommand(ShowAllArenasCommand)
+		CommandManager.registerCommand(ShutDownArenaCommand)
+		CommandManager.registerCommand(TestCommand)
 		logger.info("╭┬─╮")
 		logger.info("││ │ Mirai Smash v$version")
 		logger.info("├┼─┤ 已加载")

@@ -9,7 +9,7 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.buildMessageChain
 
-class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "关房") {
+object ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "关房") {
 	override val usage: String
 		get() = "/关房"
 
