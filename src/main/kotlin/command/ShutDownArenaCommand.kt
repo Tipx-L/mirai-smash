@@ -10,18 +10,20 @@ import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.buildMessageChain
 
 class ShutDownArenaCommand : SimpleCommand(MiraiSmash, "关房", description = "关房") {
+	override val usage: String
+		get() = "/关房"
+
 	@Handler
 	suspend fun shutDownArena(context: CommandContext) {
 		val sender = context.sender
 		val group = sender.getGroupOrNull() ?: return
 		val user = sender.user ?: return
-		MiraiSmashData.arenas.removeIf {
-			it.groupID == group.id && it.userID == user.id
-		}
 		sender.subject?.sendMessage(buildMessageChain {
 			+context.originalMessage.quote()
 			+At(user)
-			+" 已关房"
+			+if (MiraiSmashData.arenas.removeIf {
+					it.groupID == group.id && it.userID == user.id
+				}) " 已关房" else " 并未查询到可关闭的房间"
 		})
 	}
 }

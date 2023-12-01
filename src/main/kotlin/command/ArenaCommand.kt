@@ -57,8 +57,8 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 				+At(user)
 
 				if (size <= 0) {
-					+" 目前没有房间！"
-					return
+					+if (Math.random() < 0.0625) "没房，可以开一个捏亲" else " 当前没有房间，需要用 `/开房` 指令开一个吗？"
+					return@buildMessageChain
 				}
 
 				+" 目前的房间有 "
@@ -94,7 +94,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 							append(if (now) "刚才" else "前")
 						}
 					})
-					appendLine("房主")
+					+"房主\t"
 					val specialTitle = normalMember.specialTitle
 
 					if (specialTitle.isNotEmpty()) {
@@ -103,13 +103,13 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 						appendLine('】')
 					} else appendLine(normalMember.nameCardOrNick)
 
-					appendLine("**ID**")
+					+"**ID**\t"
 					+it.arenaID
 					val arenaPassword = it.arenaPassword
 
 					if (arenaPassword.isNotEmpty()) {
 						appendLine()
-						appendLine("**密码**")
+						+"**密码**\t"
 						+arenaPassword
 					}
 
@@ -117,7 +117,7 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 
 					if (arenaRemark.isNotEmpty()) {
 						appendLine()
-						appendLine("备注")
+						+"备注\t"
 						+it.arenaRemark
 					}
 				}
