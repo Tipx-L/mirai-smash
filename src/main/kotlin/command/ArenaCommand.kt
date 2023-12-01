@@ -36,7 +36,16 @@ class ArenaCommand : SimpleCommand(MiraiSmash, "房间", description = "房间")
 				sender.subject?.sendMessage(buildMessageChain {
 					+context.originalMessage.quote()
 					+At(user)
-					+" 房号不是合法格式！"
+					+" 房间 ID 不是合法格式！"
+				})
+				return
+			}
+
+			if (!arenaPassword.matches(MiraiSmash.arenaPasswordFormat)) {
+				sender.subject?.sendMessage(buildMessageChain {
+					+context.originalMessage.quote()
+					+At(user)
+					+" 房间密码不是合法格式！"
 				})
 				return
 			}
